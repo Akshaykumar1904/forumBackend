@@ -25,12 +25,12 @@ const userSchema = new mongoose.Schema(
     },
     aboutMe: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
     },
     avatar: {
       type: String,
-      required: true,
+      // required: true,
       trim: true
     },
     role: {

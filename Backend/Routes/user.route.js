@@ -1,14 +1,10 @@
 import express from 'express';
-import User from '../models/user.model.js';
-import bcrypt from 'bcrypt';
+import { login, register } from '../controllers/user.controller.js';
 const router = express.Router();
 
 // #region registerUser
-
-router.post('/register', async (req, res) => {
-  const { username, email, password, aboutMe, avatar, role } = req.body;
-})
-
+router.post('/register',register);
+router.post('/login',login)
 
 
 

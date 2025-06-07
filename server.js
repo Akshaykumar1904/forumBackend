@@ -1,17 +1,31 @@
+/*
+```About Routes```
+userRH --> userRoutesHandling
+
+*/
+
+
 import express from 'express';
 import dotenv from 'dotenv';
 import connectDb from './Backend/config/db.config.js';
 import userRoutes from './Backend/Routes/user.route.js';
 
-dotenv.config();
 
+// load the environment variables
+dotenv.config();
+// connect DATABASE-MONGO_DB
 connectDb();
+// create app using express 
 const app = express();
+// define port & default_port 
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
-app.use('/api/auth',userRoutes);
 
+// #region userRH
+app.use('/forum/api/auth',userRoutes);
+
+// for verfication purpose
 app.get('/',(req,res)=>{
   res.json({
     message:"working backend,see console now!!!!!"
@@ -20,7 +34,7 @@ app.get('/',(req,res)=>{
 });
 
 
-
+// to listen all requests made by user on routes 
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`)
 });
