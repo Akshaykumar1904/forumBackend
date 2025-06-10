@@ -33,8 +33,25 @@ const postSchema = new mongoose.Schema(
     commentsCount: {
       type: Number,
       default: 0,
-    }
-  }, { timestamps: true });
+    },
+    likes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }],
+    comments: [{
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      content: {
+        type: String,
+        required: true,
+      }
+    }]
+  }, 
+  { timestamps: true }
+);
 
 const Post = mongoose.model('Post', postSchema);
 export default Post;
