@@ -9,6 +9,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDb from './Backend/config/db.config.js';
 import userRoutes from './Backend/Routes/user.route.js';
+import postRoutes from './Backend/Routes/post.route.js';
 
 
 // load the environment variables
@@ -24,6 +25,7 @@ app.use(express.json());
 
 // #region userRH
 app.use('/forum/api/auth',userRoutes);
+app.use('/forum/api/post',postRoutes);
 
 // for verfication purpose
 app.get('/',(req,res)=>{

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import User from './user.model.js';
-import Tag from './tag.model.js';
+// import Tag from './tag.model.js';
 
 // #region PostSchema
 
@@ -23,9 +23,8 @@ const postSchema = new mongoose.Schema(
       required: true,
     },
     tags: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref:'Tag',
-      default: [],
+      type: [String],
+      default: []
     },
     votesCount: {
       type: Number,
@@ -37,5 +36,5 @@ const postSchema = new mongoose.Schema(
     }
   }, { timestamps: true });
 
-const Post = mongoose.model('Post',postSchema);
+const Post = mongoose.model('Post', postSchema);
 export default Post;
