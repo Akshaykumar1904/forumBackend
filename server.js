@@ -1,7 +1,8 @@
 /*
 ```About Routes```
 userRH --> userRoutesHandling
-
+postRH -->postRoutesHandling
+likeRH -->likesRoutesHandling
 */
 
 
@@ -10,6 +11,7 @@ import dotenv from 'dotenv';
 import connectDb from './Backend/config/db.config.js';
 import userRoutes from './Backend/Routes/user.route.js';
 import postRoutes from './Backend/Routes/post.route.js';
+import likeRoutes from './Backend/Routes/like.route.js';
 
 
 // load the environment variables
@@ -23,9 +25,15 @@ const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 
-// #region userRH
+//  userRH
 app.use('/forum/api/auth',userRoutes);
+
+// postRH
 app.use('/forum/api/post',postRoutes);
+
+// likeRH
+app.use('/forum/api/like',likeRoutes)
+
 
 // for verfication purpose
 app.get('/',(req,res)=>{
