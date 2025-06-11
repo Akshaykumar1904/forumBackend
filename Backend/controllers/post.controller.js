@@ -12,13 +12,11 @@ const createPost = async (req, res) => {
         success: false,
         message: "Title,content and author required!",
         error: error.message,
-
       });
     }
     console.log("its here also");
     const userId = req.user._id;
     console.log(userId);
-
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -27,7 +25,6 @@ const createPost = async (req, res) => {
 
       });
     }
-
     const post = new Post({
       title,
       content,
@@ -43,14 +40,11 @@ const createPost = async (req, res) => {
       message: "New post is created!",
       post,
     });
-
-
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: "Internal server error!",
       error: error.message,
-
     });
   }
 }
@@ -71,7 +65,6 @@ const updatePost = async (req, res) => {
     }
     console.log(userId);
     console.log(postId);
-
     if (!title || !content || !tags) {
       return res.status(400).json({
         success: false,
@@ -79,9 +72,7 @@ const updatePost = async (req, res) => {
         error: error.message,
       });
     }
-
     const currentPost = await Post.findById(postId);
-
     console.log(currentPost);
     if (!currentPost) {
       return res.status(400).json({
@@ -89,7 +80,6 @@ const updatePost = async (req, res) => {
         message: "Invalid post or you do not have permission to update!"
       });
     }
-
     if (currentPost.author.toString() !== userId.toString()) {
       return res.status(400).json({
         success: false,
@@ -97,7 +87,6 @@ const updatePost = async (req, res) => {
         error: error.message
       });
     }
-
     const updatePost = await Post.findByIdAndUpdate(
       postId,
       {
@@ -108,7 +97,6 @@ const updatePost = async (req, res) => {
       },
       { new: true, runValidators: true }
     );
-
     console.log(updatePost);
     return res.status(201).json({
       success: true,
@@ -131,7 +119,6 @@ const deletePost = async (req, res) => {
   try {
     const postId = req.params.id;
     const userId = req.user._id;
-
     if (!postId || !userId) {
       return res.status(400).json({
         success: false,
@@ -139,7 +126,6 @@ const deletePost = async (req, res) => {
         error: error.message,
       });
     }
-
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(400).json({
@@ -148,7 +134,6 @@ const deletePost = async (req, res) => {
         error: error.message,
       });
     }
-
     if (post.author.toString() !== userId.toString()) {
       return res.status(400).json({
         success: false,
@@ -156,13 +141,11 @@ const deletePost = async (req, res) => {
         error: error.message,
       });
     }
-
     await Post.findByIdAndDelete(postId);
     res.status(200).json({
       success: true,
       message: "post is now deleted successfully!"
     });
-
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -184,13 +167,11 @@ const getAllPosts = async (req, res) => {
       });
     }
     console.log(userId);
-
     const userPosts = await Post.find({ author: userId })
       .sort({ createdAt: -1 })
       .select('-__v');
 
     console.log(userPosts);
-
     res.status(200).json({
       success: true,
       count: userPosts.length,
@@ -201,7 +182,6 @@ const getAllPosts = async (req, res) => {
       },
       data: userPosts
     });
-
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -211,13 +191,25 @@ const getAllPosts = async (req, res) => {
   }
 }
 //#endregion
-
 // #region getPost
 
 const getSpecificPost = async (req, res) => {
   try {
-    
+    const postId = req.params.id;
 
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(400).json({
+        success: false,
+        message: "Post is not found",
+        error: error.message,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Post retreived Successfully!",
+      post
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
@@ -228,7 +220,6 @@ const getSpecificPost = async (req, res) => {
 }
 
 //#endregion
-
 
 export {
   createPost,

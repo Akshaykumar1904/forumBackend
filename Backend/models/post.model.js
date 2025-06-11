@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import User from './user.model.js';
-// import Tag from './tag.model.js';
 
 // #region PostSchema
 

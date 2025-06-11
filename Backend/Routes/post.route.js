@@ -1,5 +1,4 @@
 import express from 'express';
-import Post from '../models/post.model.js'
 import authentication from '../middlewares/authenticate.middleware.js'
 import { createPost, deletePost, updatePost,getAllPosts,getSpecificPost } from '../controllers/post.controller.js';
 
