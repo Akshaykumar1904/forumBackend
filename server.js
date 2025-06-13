@@ -12,7 +12,7 @@ import connectDb from './Backend/config/db.config.js';
 import userRoutes from './Backend/Routes/user.route.js';
 import postRoutes from './Backend/Routes/post.route.js';
 import likeRoutes from './Backend/Routes/like.route.js';
-
+import commentRoutes from './Backend/Routes/comment.routes.js';
 
 // load the environment variables
 dotenv.config();
@@ -34,6 +34,8 @@ app.use('/forum/api/post',postRoutes);
 // likeRH
 app.use('/forum/api/like',likeRoutes)
 
+// commentRH
+app.use('/forum/api/comment',commentRoutes);
 
 // for verfication purpose
 app.get('/',(req,res)=>{
