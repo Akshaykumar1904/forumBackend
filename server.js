@@ -13,6 +13,7 @@ import userRoutes from './Backend/Routes/user.route.js';
 import postRoutes from './Backend/Routes/post.route.js';
 import likeRoutes from './Backend/Routes/like.route.js';
 import commentRoutes from './Backend/Routes/comment.routes.js';
+import { errorHandler } from './Backend/middlewares/validation.middleware.js';
 
 // load the environment variables
 dotenv.config();
@@ -24,6 +25,8 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
+
+app.use(errorHandler);
 
 //  userRH
 app.use('/forum/api/auth',userRoutes);

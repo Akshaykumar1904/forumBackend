@@ -9,14 +9,14 @@ const createComment = async (req, res) => {
     const { content, post, parentComment } = req.body;
     const author = req.user._id;
     if (!author) {
-      return res.status(400).jsom({
+      return res.status(400).json({
         success: false,
         message: "User not found!",
         error: error.message
       });
     }
     if (!content) {
-      return res.status(400).jsom({
+      return res.status(400).json({
         success: false,
         message: "Content not found !",
         error: error.message
@@ -25,7 +25,7 @@ const createComment = async (req, res) => {
 
     const postExists = await Post.findById(post);
     if (!postExists) {
-      return res.status(400).jsom({
+      return res.status(400).json({
         success: false,
         message: "Post not found or you do not have permission to do this !",
         error: error.message
@@ -36,7 +36,7 @@ const createComment = async (req, res) => {
     if (parentComment) {
       const parentExists = await Comment.findById(parentComment);
       if (!parentExists) {
-        return res.status(500).jsom({
+        return res.status(500).json({
           success: false,
           message: "Parent comment not found!",
           error: error.message
@@ -66,11 +66,14 @@ const createComment = async (req, res) => {
     });
 
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).jsom({
       success: false,
       message: "Internal Server error",
       error: error.message
     });
+    */
   }
 }
 
@@ -107,14 +110,18 @@ const getAllComment = async (req, res) => {
       }
     });
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal Server error",
       error: error.message
     });
+    */
   }
 }
 
+// #region getSpecificComment
 const getCommentById = async (req, res) => {
   try {
     const commentId = req.params.id;
@@ -145,11 +152,14 @@ const getCommentById = async (req, res) => {
 
 
   } catch (error) {
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal Server error",
       error: error.message
     });
+    */
+   throw error;
   }
 }
 
@@ -157,5 +167,4 @@ export {
   createComment,
   getAllComment,
   getCommentById
-
 }

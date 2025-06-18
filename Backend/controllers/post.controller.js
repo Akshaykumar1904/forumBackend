@@ -41,11 +41,14 @@ const createPost = async (req, res) => {
       post,
     });
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error!",
       error: error.message,
     });
+    */
   }
 }
 
@@ -104,11 +107,14 @@ const updatePost = async (req, res) => {
       updatePost
     });
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error",
       error: error.message,
     });
+    */
   }
 }
 
@@ -147,11 +153,14 @@ const deletePost = async (req, res) => {
       message: "post is now deleted successfully!"
     });
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error",
       error: error.message,
     });
+    */
   }
 }
 //#endregion
@@ -183,11 +192,14 @@ const getAllPosts = async (req, res) => {
       data: userPosts
     });
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error",
       error: error.message,
     });
+    */
   }
 }
 //#endregion
@@ -211,11 +223,14 @@ const getSpecificPost = async (req, res) => {
       post
     });
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error",
       error: error.message,
     });
+    */
   }
 }
 

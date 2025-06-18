@@ -84,7 +84,7 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-const asyncErrors = (fn) => (req, res, next) => {
+const asyncHandler = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
@@ -117,8 +117,16 @@ const createCommentValidation = [
 const getCommentValidation = [
   validateObjectId('id'),
   body('voteType')
-    .isIn(['upvote', 'downvote'])
-    .withMessage('Vote type must be either upvote or downvote!'),
+    .isIn(['up', 'down'])
+    .withMessage('Vote type must be either up or down!'),
+  handleValidationErrors
+]
+
+const toggleVotesValidation = [
+  validateObjectId('id'),
+  body('voteType')
+    .isIn(['up', 'down'])
+    .withMessage('Vote type must be either up or down'),
   handleValidationErrors
 ]
 
@@ -204,28 +212,42 @@ const registerValidation = [
   body('username')
     .notEmpty()
     .withMessage('username is required')
+    .bail()
     .isLength({ min: 3, max: 30 })
     .withMessage('Username must be between 3 and 30 characters')
+    .bail()
     .matches(/^[a-zA-Z0-9_-]+$/)
     .withMessage('Username can only contain letters, numbers, underscores, and hyphens')
     .trim(),
   body('email')
     .notEmpty()
     .withMessage('email is required!')
+    .bail()
+    .isEmail()
+    .withMessage('please provide valid email!')
+    .bail()
     .normalizeEmail()
     .isLength({ max: 100 })
     .withMessage('Email must not exceed 100 characters'),
   body('password')
     .isLength({ min: 8, max: 128 })
     .withMessage('password must be between 8 and 128 characters')
-    .matches('Password must contain at least one uppercase letter, one lowercase letter, one number and one special character'),
-  body('confirmPassword')
+    .bail()
+    // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).*$/)
+    // .withMessage('Password must contain at least one uppercase letter, one lowercase letter, one number and one special character')
+    // .bail()
+  ,body('role')
+    .isIn(['user', 'admin'])
+    .withMessage('role must be either user or admin'),
+  /*
+    body('confirmPassword')
     .custom((value, { req }) => {
       if (value !== req.body.password) {
         throw new Error('Passwords do not match');
       }
       return true;
     }),
+    */
   handleValidationErrors
 ]
 
@@ -265,12 +287,13 @@ const paginationValidation = [
 ]
 
 
-export{
+export {
   paginationValidation,
   loginValidation,
   registerValidation,
   deletePostValidation,
   getCommentValidation,
+  toggleVotesValidation,
   getPostValidation,
   getVotesValidation,
   updatePostValidation,
@@ -279,7 +302,7 @@ export{
   createPostValidation,
   errorHandler,
   authLimiter,
-  asyncErrors
+  asyncHandler
 }
 
 

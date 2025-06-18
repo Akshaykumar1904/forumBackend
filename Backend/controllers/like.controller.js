@@ -83,11 +83,14 @@ const toggleVote = async (req, res) => {
     }
 
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error!",
       error: error.message
     });
+    */
   }
 }
 
@@ -134,11 +137,14 @@ const getAllVotes = async (req, res) => {
     });
 
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error!",
       error: error.message
     });
+    */
   }
 }
 
@@ -190,11 +196,14 @@ const getVoteDetails = async (req, res) => {
       count: formattedVotes.length
     });
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error!",
       error: error.message
     });
+    */
   }
 }
 
@@ -249,11 +258,14 @@ const userHistory = async (req, res) => {
     });
 
   } catch (error) {
+    throw error;
+    /*
     return res.status(500).json({
       success: false,
       message: "Internal server error!",
       error: error.message
     });
+    */
   }
 }
 
@@ -270,7 +282,8 @@ async function updatePostVoteCount(postId) {
 
     console.log(`Updated Post ${postId} has vote Count :${upVotes - downVotes}`);
   } catch (error) {
-    console.error('Error updating post vote count:', error);
+    throw error;
+    // console.error('Error updating post vote count:', error);
   }
 }
 export {
