@@ -14,6 +14,7 @@ import postRoutes from './Backend/Routes/post.route.js';
 import likeRoutes from './Backend/Routes/like.route.js';
 import commentRoutes from './Backend/Routes/comment.routes.js';
 import { errorHandler } from './Backend/middlewares/validation.middleware.js';
+import { swaggerUi,specs } from './Backend/config/swagger.config.js';
 
 // load the environment variables
 dotenv.config();
@@ -27,6 +28,15 @@ const PORT = process.env.PORT || 4000;
 app.use(express.json());
 
 app.use(errorHandler);
+
+app.use('/api/docs',swaggerUi.serve,swaggerUi.setup(specs,{
+  explorer:true,
+  customCss:'.swagger-ui .topbar{display:none}',
+  customSiteTitle:"Forum discussion backend Docs"
+}))
+
+
+console.log('API Documentation available at: http://localhost:4000/api/docs');
 
 //  userRH
 app.use('/forum/api/auth',userRoutes);
