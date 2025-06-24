@@ -1,26 +1,36 @@
-/*
-```About Routes```
-userRH --> userRoutesHandling
-postRH -->postRoutesHandling
-likeRH -->likesRoutesHandling
-*/
-
-
 import express from 'express';
+/*
+BASIC-CONFIG-IMPORTS!
+*/
 import dotenv from 'dotenv';
 import connectDb from './Backend/config/db.config.js';
+/*
+ROUTING-IMPORTS!
+*/
 import userRoutes from './Backend/Routes/user.route.js';
 import postRoutes from './Backend/Routes/post.route.js';
 import likeRoutes from './Backend/Routes/like.route.js';
 import commentRoutes from './Backend/Routes/comment.routes.js';
+/*
+ERROR-HANDLING-IMPORTS!
+*/
 import { errorHandler } from './Backend/middlewares/validation.middleware.js';
-import { swaggerUi,specs } from './Backend/config/swagger.config.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { globalErrorHandler } from './Backend/middlewares/error.middleware.js';
+import { NotFoundError } from './Backend/utils/customError.js';
+
+/*
+DOCUMENTATION-IMPORTS!
+*/
+import { swaggerUi, specs } from './Backend/config/swagger.config.js';
 import cors from 'cors';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+
+
 
 // load the environment variables
 dotenv.config();
@@ -38,7 +48,8 @@ app.use(cors()); // Enable CORS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Documentation routes (before API routes)
+/*
+Documentation routes (before API routes)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
   customCss: `
     .swagger-ui .topbar { display: none }
@@ -50,6 +61,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
     persistAuthorization: true,
   }
 }));
+*/
 
 // Modern Scalar Documentation
 app.get('/docs', (req, res) => {
@@ -93,6 +105,7 @@ app.get('/docs', (req, res) => {
   res.send(html);
 });
 
+/*
 // Redoc Documentation
 app.get('/redoc', (req, res) => {
   const html = `
@@ -128,6 +141,8 @@ app.get('/redoc', (req, res) => {
   res.send(html);
 });
 
+*/
+
 // Serve OpenAPI JSON
 app.get('/api/openapi.json', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
@@ -139,56 +154,34 @@ app.get('/documentation', (req, res) => {
   res.redirect('/docs');
 });
 
-// Health check route
-app.get('/', (req, res) => {
-  res.json({
-    message: "Forum API is running!",
-    documentation: {
-      swagger: `http://localhost:${PORT}/api-docs`,
-      scalar: `http://localhost:${PORT}/docs`,
-      redoc: `http://localhost:${PORT}/redoc`
-    },
-    version: "1.0.0"
-  });
-});
-// 
-// Start server
+
+//  userRH
+app.use('/forum/api/auth', userRoutes);
+
+// postRH
+app.use('/forum/api/post', postRoutes);
+
+// likeRH
+app.use('/forum/api/like', likeRoutes)
+
+// commentRH
+app.use('/forum/api/comment', commentRoutes);
+
+// app.all('*', (req, res, next) => {
+//   next(new NotFoundError(`Can't find ${req.originalUrl} on this server!`));
+// });
+
+
+app.use(globalErrorHandler);
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📚 API Documentation available at:`);
-  console.log(`   - Swagger UI: http://localhost:${PORT}/api-docs`);
+  // console.log(`   - Swagger UI: http://localhost:${PORT}/api-docs`);
   console.log(`   - Scalar UI: http://localhost:${PORT}/docs`);
-  console.log(`   - Redoc UI: http://localhost:${PORT}/redoc`);
+  // console.log(`   - Redoc UI: http://localhost:${PORT}/redoc`);
 });
 
-
-// console.log('API Documentation available at: http://localhost:4000/api/docs');
-
-//  userRH
-app.use('/forum/api/auth',userRoutes);
-
-// postRH
-app.use('/forum/api/post',postRoutes);
-
-// likeRH
-app.use('/forum/api/like',likeRoutes)
-
-// commentRH
-app.use('/forum/api/comment',commentRoutes);
-
-// for verfication purpose
-app.get('/',(req,res)=>{
-  res.json({
-    message:"working backend,see console now!!!!!"
-  })
-  console.log("its working,thanks")
-});
-
-
-// to listen all requests made by user on routes 
-app.listen(PORT, () => {
-  console.log(`server running on port ${PORT}`)
-});
 
 export default app;
 
