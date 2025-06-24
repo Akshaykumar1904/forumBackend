@@ -7,10 +7,16 @@ import { createLimiter, createCommentValidation, paginationValidation, getCommen
 const router = express.Router();
 // router.use(authenticate);
 
-
+/*
 router.post('/createComment', authenticate, createLimiter, createCommentValidation, asyncHandler(createComment));
 router.post('/allComment', paginationValidation, asyncHandler(getAllComment));
 router.post('/getComment/:id', getCommentValidation, asyncHandler(getCommentById));
+*/
 
+router.post('/', authenticate, createLimiter, createCommentValidation, asyncHandler(createComment));
+router.get('/', paginationValidation, asyncHandler(getAllComment));
+router.get('/:id', getCommentValidation, asyncHandler(getCommentById));
+// router.put('/:id', authenticate, updateCommentValidation, asyncHandler(updateComment));
+// router.delete('/:id', authenticate, deleteCommentValidation, asyncHandler(deleteComment));
 
 export default router;
