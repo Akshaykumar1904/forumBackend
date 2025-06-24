@@ -6,11 +6,17 @@ import { getVotesValidation, toggleVotesValidation,asyncHandler } from '../middl
 
 const router = express.Router();
 router.use(authenticate);
-
+/*
 router.post('/:id', toggleVotesValidation, asyncHandler(toggleVote));
 router.get('/:id/allVotes', getVotesValidation, asyncHandler(getAllVotes));
 router.get('/:id/vote-Details', getVotesValidation, asyncHandler(getVoteDetails));
 router.get('/my-votes', asyncHandler(userHistory));
+*/
+
+router.post('/:id/vote', toggleVotesValidation, asyncHandler(toggleVote));
+router.get('/:id/votes', getVotesValidation, asyncHandler(getAllVotes));
+router.get('/:id/vote-details', getVotesValidation, asyncHandler(getVoteDetails));
+router.get('/my-votes', authenticate, asyncHandler(userHistory));
 
 export default router;
 
