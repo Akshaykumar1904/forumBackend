@@ -215,6 +215,7 @@ const getSpecificPost = async (req, res) => {
         success: false,
         message: "Post is not found",
         error: error.message,
+
       });
     }
     return res.status(200).json({

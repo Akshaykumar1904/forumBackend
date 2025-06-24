@@ -7,12 +7,19 @@ import { createLimiter, getPostValidation, createPostValidation, updatePostValid
 const router = express.Router();
 router.use(authentication);
 
+/*
 router.post('/createPost', createLimiter, createPostValidation, asyncHandler(createPost));
 router.post('/posts', paginationValidation, asyncHandler(getAllPosts));
 router.post('/posts/:id', getPostValidation, asyncHandler(getSpecificPost));
 router.put('/:id', updatePostValidation, asyncHandler(updatePost));
 router.delete('/:id', deletePostValidation, asyncHandler(deletePost));
+*/
 
+router.post('/', createLimiter, createPostValidation, asyncHandler(createPost));
+router.get('/', paginationValidation, asyncHandler(getAllPosts));
+router.get('/:id', getPostValidation, asyncHandler(getSpecificPost));
+router.put('/:id', updatePostValidation, asyncHandler(updatePost));
+router.delete('/:id', deletePostValidation, asyncHandler(deletePost));
 
 
 export default router;
