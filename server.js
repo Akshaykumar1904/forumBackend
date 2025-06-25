@@ -24,12 +24,18 @@ DOCUMENTATION-IMPORTS!
 import { swaggerUi, specs } from './Backend/config/swagger.config.js';
 import cors from 'cors';
 
+/*
 import path from 'path';
 import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+*/
 
-
+/*
+for NoSQL injection and XSS security
+*/
+import mongoSanitize from 'express-mongo-sanitize';
+import helmet from 'helmet';
 
 
 // load the environment variables
@@ -41,12 +47,17 @@ const app = express();
 // define port & default_port 
 const PORT = process.env.PORT || 4000;
 
+// Basic security first
+app.use(helmet());                // Secure HTTP headers
+app.use(mongoSanitize());        //  Prevent NoSQL injection
+app.use(cors());                 // Enable CORS
 
-app.use(errorHandler);
-
-app.use(cors()); // Enable CORS
+// Parsing incoming data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Validation-related middleware early
+app.use(errorHandler);           // Your input validator error handler
 
 /*
 Documentation routes (before API routes)
